@@ -14,37 +14,44 @@ module.exports = function(grunt) {
   // creation: http://gruntjs.com/creating-tasks
 
   grunt.registerMultiTask('json_remove_fields', 'A Grunt task to remove specified fields in JSON files.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+      // getting source file
+      var src = this.data.src;
 
-      // Handle options.
-      src += options.punctuation;
+      if (!src) {
+          grunt.log.error('No source specified');
+          return false; // abort execution
+      }
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
+      if (!grunt.file.exists(src)) {
+          grunt.log.error('File ' + src + ' not found');
+          return false; // abort execution
+      }
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
-    });
+      // getting destination file
+      var dest = this.data.dest;
+
+      if (!dest) {
+          dest = src;
+      }
+
+      // getting fields to remove
+      var fields = this.data.fields;
+
+      // read src file as JSON object
+      var srcJSON = grunt.file.readJSON(src);
+
+      if (!Array.isArray(fields)) {
+          grunt.log.error('No fields array specified');
+          return false; // abort execution
+      }
+
+      for (var i=0; i<fields.length; i++) {
+          delete srcJSON[fields[i]]; // deleting specified fields from JSON object
+      }
+
+      grunt.file.write(dest, JSON.stringify(srcJSON, null, 2)); // serialize JSON to file again
+
   });
 
 };

@@ -30,21 +30,13 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     json_remove_fields: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+      package_json: {
+          src: 'package.json',
+          dest: 'temp.json',
+          fields: ['devDependencies']
       },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!'
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+      another_package_json: {
+
       }
     },
 
