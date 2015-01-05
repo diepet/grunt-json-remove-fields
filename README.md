@@ -1,6 +1,6 @@
 # grunt-json-remove-fields
 
-> A Grunt task to remove specified fields in JSON files.
+> A Grunt task to remove specified fields in JSON files. Personally, I used this plugin to remove **devDependencies** field to the *package.json* file used in the production environment.
 
 ## Getting Started
 This plugin requires Grunt `~0.4`
@@ -25,11 +25,11 @@ In your project's Gruntfile, add a section named `json_remove_fields` to the dat
 ```js
 grunt.initConfig({
   json_remove_fields: {
-    options: {
+    package_json: {
       // Task-specific options go here.
     },
-    your_target: {
-      // Target-specific file lists and/or options go here.
+    some_other_json: {
+      // Task-specific options go here.
     },
   },
 });
@@ -37,17 +37,27 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### src
 Type: `String`
-Default value: `',  '`
 
-A string value that is used to do something with whatever.
+The JSON file where do you want to remove some field.
 
-#### options.punctuation
+#### dest
 Type: `String`
-Default value: `'.'`
+Default value: The same value defined in **src** option.
 
-A string value that is used to do something else with whatever else.
+The destination JSON file with removed fields. If this option is not defined than the file specified in **src** will be overwritten.
+
+#### fields
+Type: `Array`
+
+A list of fields to remove.
+
+#### space
+Type: `Integer` or `String`
+Default value: 2
+
+The same use of the third argument of the **JSON.stringify** Javascript method. [See here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) for more details. 
 
 ### Usage Examples
 
@@ -56,28 +66,20 @@ In this example, the default options are used to do something with whatever. So 
 
 ```js
 grunt.initConfig({
-  json_remove_fields: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  json_remove_fields: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+    //      
+    json_remove_fields: {
+      package_json: {
+          src: 'package.json',
+          dest: 'dist/package.json',
+          fields: ['devDependencies']
+      },
+      some_other_json: {
+          src: 'color.json',
+          dest: 'dist/color.json',
+          fields: ['magenta', 'black'],
+          space: '\t'
+      }
+    }
   },
 });
 ```
