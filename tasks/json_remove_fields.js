@@ -59,6 +59,7 @@ module.exports = function(grunt) {
 
       grunt.file.write(dest, JSON.stringify(srcJSON, null, space)); // serialize JSON to file again
 
+      grunt.log.writeln("Removed fields [" + fields + "] from " + src + " into " + dest);
   });
 
 };
