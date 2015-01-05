@@ -1,7 +1,7 @@
 {
   "name": "grunt-json-remove-fields",
   "description": "A Grunt task to remove specified fields in JSON files.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/diepet/grunt-json-remove-fields",
   "author": {
     "name": "diepet",
