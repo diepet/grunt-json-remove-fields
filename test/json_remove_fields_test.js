@@ -27,22 +27,22 @@ exports.json_remove_fields = {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
+  package_json: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var actual = grunt.file.read('tmp/sample.package.json');
+    var expected = grunt.file.read('test/expected/sample.package.json');
+    test.equal(actual, expected, 'Actual must be equal to expected');
 
     test.done();
   },
-  custom_options: function(test) {
+  sample_json: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    var actual = grunt.file.read('tmp/sample.file.json');
+    var expected = grunt.file.read('test/expected/sample.file.json');
+    test.equal(actual, expected, 'Actual must be equal to expected');
 
     test.done();
-  },
+  }
 };
