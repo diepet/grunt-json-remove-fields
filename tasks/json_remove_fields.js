@@ -50,7 +50,14 @@ module.exports = function(grunt) {
           delete srcJSON[fields[i]]; // deleting specified fields from JSON object
       }
 
-      grunt.file.write(dest, JSON.stringify(srcJSON, null, 2)); // serialize JSON to file again
+      // getting space option
+      var space = this.data.space;
+
+      if (!space) {
+          space = 2; // default value to 2
+      }
+
+      grunt.file.write(dest, JSON.stringify(srcJSON, null, space)); // serialize JSON to file again
 
   });
 
