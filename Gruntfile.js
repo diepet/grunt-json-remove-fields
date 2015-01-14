@@ -31,15 +31,22 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     json_remove_fields: {
       package_json: {
+          options: {
+            fields: ['devDependencies'],
+            space: 2
+          },
+
           src: 'test/fixtures/sample.package.json',
-          dest: 'tmp/sample.package.json',
-          fields: ['devDependencies']
+          dest: 'tmp/sample.package.json'
       },
       sample_json: {
+          options: {
+            fields: ['magenta', 'black'],
+            space: '\t'
+          },
+
           src: 'test/fixtures/sample.file.json',
-          dest: 'tmp/sample.file.json',
-          fields: ['magenta', 'black'],
-          space: '\t'
+          dest: 'tmp/sample.file.json'
       }
     },
 

@@ -15,51 +15,36 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('json_remove_fields', 'A Grunt task to remove specified fields in JSON files.', function() {
 
-      // getting source file
-      var src = this.data.src;
+      var options = this.options({
+        space: null
+      });
 
-      if (!src) {
-          grunt.log.error('No source specified');
-          return false; // abort execution
-      }
+      this.files.forEach(function (file) {
+        file.src.forEach(function (srcPath) {
+          // read src file as JSON object
+          var srcJSON = grunt.file.readJSON(srcPath);
 
-      if (!grunt.file.exists(src)) {
-          grunt.log.error('File ' + src + ' not found');
-          return false; // abort execution
-      }
+          // getting destination file, default to srcPath
+          var dest = file.dest || srcPath;
 
-      // getting destination file
-      var dest = this.data.dest;
+          // getting fields to remove
+          var fields = options.fields;
+          if (!Array.isArray(fields)) {
+            // abort execution
+            grunt.log.error('No fields array specified');
+          }
 
-      if (!dest) {
-          dest = src;
-      }
+          // deleting specified fields from JSON object
+          fields.forEach(function (field) {
+            delete srcJSON[field];
+          });
 
-      // getting fields to remove
-      var fields = this.data.fields;
+          // serialize JSON to file again
+          grunt.file.write(dest, JSON.stringify(srcJSON, null, options.space));
+          grunt.log.writeln("Removed fields [" + fields + "] from " + srcPath + " into " + dest);
+        });
+      });
 
-      // read src file as JSON object
-      var srcJSON = grunt.file.readJSON(src);
-
-      if (!Array.isArray(fields)) {
-          grunt.log.error('No fields array specified');
-          return false; // abort execution
-      }
-
-      for (var i=0; i<fields.length; i++) {
-          delete srcJSON[fields[i]]; // deleting specified fields from JSON object
-      }
-
-      // getting space option
-      var space = this.data.space;
-
-      if (!space) {
-          space = 2; // default value to 2
-      }
-
-      grunt.file.write(dest, JSON.stringify(srcJSON, null, space)); // serialize JSON to file again
-
-      grunt.log.writeln("Removed fields [" + fields + "] from " + src + " into " + dest);
   });
 
 };
